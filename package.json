@@ -1,0 +1,30 @@
+{
+  "name": "cf-files",
+  "version": "1.0.0",
+  "description": "Temporary S3 upload URL signer for coding agents",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "types:check": "wrangler types --include-runtime=false --check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ptqa/cf-files.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/ptqa/cf-files/issues"
+  },
+  "homepage": "https://github.com/ptqa/cf-files#readme",
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.21.2",
+    "@cloudflare/workers-types": "^5.20260812.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.122.0"
+  },
+  "dependencies": {
+    "aws4fetch": "^1.0.20"
+  }
+}

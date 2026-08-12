@@ -1,0 +1,117 @@
+openapi: 3.1.0
+info:
+  title: Temporary File Signing Service
+  version: 0.1.0
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      security: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - status
+                properties:
+                  status:
+                    type: string
+                    const: ok
+  /v1/uploads:
+    post:
+      operationId: createUpload
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - filename
+                - content_type
+              properties:
+                filename:
+                  type: string
+                  minLength: 1
+                  description: Path components are removed; the basename is conservatively sanitized to ASCII letters, digits, dot, underscore, and hyphen, then limited to 255 characters.
+                content_type:
+                  type: string
+                  description: Defaults to image/png, image/jpeg, or image/webp; deployments can configure the allowlist.
+                  examples:
+                    - image/png
+      responses:
+        '200':
+          description: Upload URLs created
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - key
+                  - upload_url
+                  - download_url
+                  - upload_expires_in
+                  - download_expires_in
+                  - markdown
+                properties:
+                  key:
+                    type: string
+                  upload_url:
+                    type: string
+                    format: uri
+                  download_url:
+                    type: string
+                    format: uri
+                    description: Presigned URL; no authentication required.
+                  upload_expires_in:
+                    type: integer
+                  download_expires_in:
+                    type: integer
+                  markdown:
+                    type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '413':
+          description: Request body exceeds 8192 bytes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required:
+        - error
+      properties:
+        error:
+          type: string

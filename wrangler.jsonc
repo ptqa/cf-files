@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cf-files",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-12",
+  "vars": {
+    "S3_ENDPOINT": "https://example.r2.cloudflarestorage.com",
+    "S3_REGION": "auto",
+    "S3_BUCKET": "files",
+    "UPLOAD_URL_TTL_SECONDS": "600",
+    "DOWNLOAD_URL_TTL_SECONDS": "604800",
+    "ALLOWED_CONTENT_TYPES": "image/png,image/jpeg,image/webp"
+  },
+  "secrets": {
+    "required": [
+      "UPLOAD_TOKEN",
+      "S3_ACCESS_KEY_ID",
+      "S3_SECRET_ACCESS_KEY"
+    ]
+  }
+}
