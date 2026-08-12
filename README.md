@@ -21,7 +21,6 @@ Required configuration:
 | `S3_BUCKET` | Private bucket name | `agent-files` |
 | `UPLOAD_URL_TTL_SECONDS` | PUT URL lifetime, 1-604800 | `600` |
 | `DOWNLOAD_URL_TTL_SECONDS` | GET URL lifetime, 1-604800 | `604800` |
-| `ALLOWED_CONTENT_TYPES` | Comma-separated allowlist; this default is already in `wrangler.jsonc` | `image/png,image/jpeg,image/webp` |
 
 Set secrets interactively:
 
@@ -91,6 +90,7 @@ printf '%s\n' "$RESULT" | jq -r .markdown
 ```
 
 The `Content-Type` on the PUT must match the requested `content_type` because it is covered by the signature.
+Any valid media type is accepted. File bytes and file size are not proxied or limited by the Worker; backend single-PUT limits still apply.
 
 ## Expiration
 

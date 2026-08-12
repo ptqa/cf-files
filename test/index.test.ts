@@ -173,7 +173,6 @@ describe("temporary file signing worker", () => {
   });
 
   it.each([
-    ["unsupported MIME", { filename: "photo.gif", content_type: "image/gif" }],
     ["missing filename", { content_type: "image/png" }],
     ["missing content type", { filename: "photo.png" }],
   ])("rejects %s", async (_name, body) => {
@@ -317,8 +316,6 @@ describe("temporary file signing worker", () => {
     ["region whitespace", { S3_REGION: "us east 1" }],
     ["empty access key", { S3_ACCESS_KEY_ID: "  " }],
     ["missing signing configuration", { S3_SECRET_ACCESS_KEY: undefined }],
-    ["empty MIME list", { ALLOWED_CONTENT_TYPES: "" }],
-    ["invalid MIME list", { ALLOWED_CONTENT_TYPES: "image/png; charset=utf-8" }],
   ])("returns a detail-free JSON 500 for %s", async (_name, overrides) => {
     const requestEnv = { ...env, ...overrides } as Env;
     const { response, body } = await uploadRequest(
@@ -332,18 +329,28 @@ describe("temporary file signing worker", () => {
     expect(body).toEqual({ error: "internal_error" });
   });
 
-  it("uses a valid configured MIME allowlist", async () => {
-    const requestEnv = {
-      ...env,
-      ALLOWED_CONTENT_TYPES: " application/pdf ",
-    } as unknown as Env;
-    const { response } = await uploadRequest(
-      { filename: "result.pdf", content_type: "application/pdf" },
-      uploadToken,
-      requestEnv,
-    );
+  it.each([
+    ["document.pdf", "application/pdf"],
+    ["archive.zip", "application/zip"],
+    ["artifact.bin", "application/octet-stream"],
+    ["notes.txt", "text/plain"],
+  ])("accepts any valid content type for %s", async (filename, contentType) => {
+    const { response } = await uploadRequest({
+      filename,
+      content_type: contentType,
+    });
 
     expect(response.status).toBe(200);
+  });
+
+  it("rejects a malformed content type", async () => {
+    const { response, body } = await uploadRequest({
+      filename: "artifact.bin",
+      content_type: "not a media type",
+    });
+
+    expect(response.status).toBe(400);
+    expect(body).toEqual({ error: "invalid_request" });
   });
 
   it("returns a boring JSON 404 for unknown paths and methods", async () => {

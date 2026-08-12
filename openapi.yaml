@@ -43,7 +43,7 @@ paths:
                   description: Path components are removed; the basename is conservatively sanitized to ASCII letters, digits, dot, underscore, and hyphen, then limited to 255 characters.
                 content_type:
                   type: string
-                  description: Defaults to image/png, image/jpeg, or image/webp; deployments can configure the allowlist.
+                  description: Media type to bind to the presigned PUT request. Any valid media type is accepted.
                   examples:
                     - image/png
       responses:

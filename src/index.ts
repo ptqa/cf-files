@@ -6,6 +6,9 @@ type UploadBody = {
   content_type: string;
 };
 
+const MEDIA_TYPE =
+  /^[!#$%&'*+.^_`|~0-9A-Za-z-]+\/[!#$%&'*+.^_`|~0-9A-Za-z-]+$/;
+
 function json(value: object, status = 200): Response {
   return Response.json(value, {
     status,
@@ -137,7 +140,7 @@ const worker = {
 
     try {
       const config = readConfig(env);
-      if (!config.allowedContentTypes.includes(value.content_type)) {
+      if (!MEDIA_TYPE.test(value.content_type)) {
         return json({ error: "invalid_request" }, 400);
       }
 

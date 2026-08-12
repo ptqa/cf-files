@@ -3,13 +3,18 @@
   "name": "cf-files",
   "main": "src/index.ts",
   "compatibility_date": "2026-08-12",
+  "routes": [
+    {
+      "pattern": "file.bebekgenius.com",
+      "custom_domain": true
+    }
+  ],
   "vars": {
-    "S3_ENDPOINT": "https://example.r2.cloudflarestorage.com",
+    "S3_ENDPOINT": "https://8d8813a2de080c1710c6316e432826aa.r2.cloudflarestorage.com",
     "S3_REGION": "auto",
-    "S3_BUCKET": "files",
+    "S3_BUCKET": "cf-files",
     "UPLOAD_URL_TTL_SECONDS": "600",
-    "DOWNLOAD_URL_TTL_SECONDS": "604800",
-    "ALLOWED_CONTENT_TYPES": "image/png,image/jpeg,image/webp"
+    "DOWNLOAD_URL_TTL_SECONDS": "604800"
   },
   "secrets": {
     "required": [

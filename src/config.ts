@@ -1,7 +1,4 @@
 const MAX_TTL_SECONDS = 604800;
-const DEFAULT_CONTENT_TYPES = ["image/png", "image/jpeg", "image/webp"];
-const MEDIA_TYPE =
-  /^[!#$%&'*+.^_`|~0-9A-Za-z-]+\/[!#$%&'*+.^_`|~0-9A-Za-z-]+$/;
 
 export type UploadConfig = {
   endpoint: URL;
@@ -11,7 +8,6 @@ export type UploadConfig = {
   secretAccessKey: string;
   uploadTtl: number;
   downloadTtl: number;
-  allowedContentTypes: string[];
 };
 
 function required(value: unknown, name: string): string {
@@ -76,21 +72,6 @@ function region(value: unknown): string {
 }
 
 export function readConfig(env: Env): UploadConfig {
-  const configuredTypes = env.ALLOWED_CONTENT_TYPES;
-  if (configuredTypes !== undefined && typeof configuredTypes !== "string") {
-    throw new Error("invalid ALLOWED_CONTENT_TYPES");
-  }
-
-  const allowedContentTypes = configuredTypes === undefined
-    ? DEFAULT_CONTENT_TYPES
-    : configuredTypes.split(",").map((type) => type.trim());
-  if (
-    allowedContentTypes.length === 0 ||
-    allowedContentTypes.some((type) => !MEDIA_TYPE.test(type))
-  ) {
-    throw new Error("invalid ALLOWED_CONTENT_TYPES");
-  }
-
   return {
     endpoint: endpoint(env.S3_ENDPOINT),
     region: region(env.S3_REGION),
@@ -103,6 +84,5 @@ export function readConfig(env: Env): UploadConfig {
       MAX_TTL_SECONDS,
       "DOWNLOAD_URL_TTL_SECONDS",
     ),
-    allowedContentTypes,
   };
 }
