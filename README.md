@@ -74,6 +74,22 @@ Keep the bucket private. The generated GET URL carries its own temporary SigV4 a
 
 ## Use
 
+Install the dependency-free Go uploader into `~/.local/bin`:
+
+```bash
+go build -o "$HOME/.local/bin/cf-files-upload" cf-files-upload.go
+```
+
+With `CF_UPLOAD_TOKEN` set, upload a file and print its Markdown link:
+
+```bash
+cf-files-upload result.png
+```
+
+Set `CF_FILES_URL` to use a deployment other than `https://file.bebekgenius.com`.
+
+The equivalent raw API flow is:
+
 ```bash
 RESULT=$(curl --fail --silent --show-error \
   -H "Authorization: Bearer $TOKEN" \
