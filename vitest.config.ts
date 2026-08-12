@@ -4,7 +4,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   plugins: [
     cloudflareTest({
-      wrangler: { configPath: "./wrangler.jsonc" },
+      wrangler: { configPath: "./wrangler.example.jsonc" },
       miniflare: {
         bindings: {
           S3_ENDPOINT: "https://example.r2.cloudflarestorage.com",

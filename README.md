@@ -6,11 +6,14 @@ The PUT URL defaults to 10 minutes, the GET URL to 7 days, and a bucket lifecycl
 
 ## Configure
 
-Install dependencies and edit the non-secret values in `wrangler.jsonc`:
+Install dependencies, copy the example configuration, and replace its endpoint, bucket, and optional custom domain with your values:
 
 ```bash
 npm install
+cp wrangler.example.jsonc wrangler.jsonc
 ```
+
+`wrangler.jsonc` is intentionally ignored so deployment-specific account IDs, bucket names, and domains are not committed.
 
 Required configuration:
 

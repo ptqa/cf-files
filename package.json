@@ -5,7 +5,7 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "types:check": "wrangler types --include-runtime=false --check"
+    "types:check": "wrangler types --config wrangler.example.jsonc --include-runtime=false --check"
   },
   "repository": {
     "type": "git",
